@@ -1,8 +1,9 @@
 import React from "react";
 import style from "./home.module.scss";
+import Header from "../components/header";
 
 const Home: React.FC = () => {
-  return <h1 className={style.heading}>Hello world</h1>;
+  return <Header />;
 };
 
 export default Home;
