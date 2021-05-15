@@ -10,7 +10,6 @@ const Home: React.FC = () => {
           background: "red",
           height: "100px",
           width: "100px",
-          margin: "100px",
           marginLeft: "100px",
         }}
       ></div>
