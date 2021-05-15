@@ -5,7 +5,7 @@ const Header: React.FC = () => {
   return (
     <div className={style.container}>
       <div className={style.links_wraper}>
-        <h1 className={style.link}>linktree</h1>
+        <h1 className={style.name}>linktree</h1>
         <h1 className={style.link}>Blog</h1>
         <h1 className={style.link}>Pricing</h1>
         <h1 className={style.link}>Help</h1>

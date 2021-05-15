@@ -4,6 +4,8 @@
   align-items: center;
   height: 5rem;
   width: 100%;
+  background-color: white;
+  position: fixed;
 }
 .links_wraper {
   display: flex;
@@ -15,6 +17,14 @@
   position: absolute;
   right: 2rem;
   align-items: center;
+}
+.name {
+  font-size: 18px;
+  font-weight: normal;
+  display: inline-block;
+  height: 75px;
+  line-height: 75px;
+  margin-left: 2rem;
 }
 .link {
   font-size: 18px;
