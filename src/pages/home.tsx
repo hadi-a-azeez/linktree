@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "./home.module.scss";
 import Header from "../components/header";
 
 const Home: React.FC = () => {
+  const [username, setUsername] = useState("linktr.ee/");
+
   return (
     <div className={style.container}>
       <Header />
@@ -16,8 +18,31 @@ const Home: React.FC = () => {
         <h1 className={style.link}>Log in</h1>
       </div>
       <div className={style.phone}>
-        <div className={style.phone_background}></div>
+        <div className={style.phone_profile}>
+          {/*   <img
+            src="https://cdn-images-1.medium.com/max/1200/1*NpUUls7kjn9JhO4ChjGV7w.png"
+            style={{
+              width: "100%",
+              height: "100%",
+              borderRadius: "50%",
+              objectFit: "cover",
+            }}
+          /> */}
+        </div>
+        <div className={style.card} />
+        <div className={style.card} />
+        <div className={style.card} />
+        <div className={style.card} />
+        <div className={style.card} />
       </div>
+      <div className={style.line}></div>
+      <input
+        type="text"
+        className={style.input_name}
+        placeholder="linktr.ee/"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      />
     </div>
   );
 };
