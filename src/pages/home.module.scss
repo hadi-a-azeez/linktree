@@ -4,6 +4,17 @@
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
+
+  animation: fullpage 1s forwards;
+  @keyframes fullpage {
+    0% {
+      opacity: 0;
+      transform: rotateY(90deg);
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 }
 .heading_big {
   color: rgb(19, 20, 21);
@@ -118,10 +129,19 @@
     margin-top: 1rem;
     background-color: white;
 
-    transition: transform, opacity;
-    &::after {
-      opacity: 1;
-      transform: scale(1) translateY(100px);
+    animation: Swipe 2s forwards;
+
+    @keyframes Swipe {
+      0% {
+        opacity: 0;
+        transform: scale(0) translateY(13rem);
+      }
+      60% {
+        transform: scale(1);
+      }
+      100% {
+        opacity: 1;
+      }
     }
   }
 }
@@ -144,4 +164,31 @@
     outline: none;
     padding: 1.7rem 2.5rem;
   }
+}
+
+.icon {
+  height: 30px;
+  width: auto;
+  position: absolute;
+
+  top: 20rem;
+  z-index: 2;
+  animation: iconMovement 3s infinite;
+
+  @keyframes iconMovement {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      transform: translateX(25rem) translateY(16rem) rotate(180deg);
+      opacity: 1;
+    }
+  }
+}
+.posLeft {
+  left: random($limit: 20) + rem;
+}
+.posRight {
+  right: random($limit: 20) + rem;
 }

@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import style from "./home.module.scss";
 import Header from "../components/header";
+import Twitter from "../assets/twitter.png";
+import Android from "../assets/android.png";
+import Dori from "../assets/dori.png";
+import Event from "../assets/eventbrite.png";
+import Instagram from "../assets/instagram.png";
 
 const Home: React.FC = () => {
   const [username, setUsername] = useState("linktr.ee/");
@@ -17,18 +22,33 @@ const Home: React.FC = () => {
         <h1 className={style.text}>Already on Linktree?</h1>
         <h1 className={style.link}>Log in</h1>
       </div>
+      <img
+        src={Twitter}
+        alt="k"
+        className={`${style.posLeft} ${style.icon}`}
+      ></img>
+      {/* <img
+        src={Android}
+        alt="k"
+        className={`${style.posLeft} ${style.icon}`}
+      ></img>
+      <img
+        src={Dori}
+        alt="k"
+        className={`${style.posLeft} ${style.icon}`}
+      ></img>
+      <img
+        src={Event}
+        alt="k"
+        className={`${style.posLeft} ${style.icon}`}
+      ></img> */}
+      <img
+        src={Instagram}
+        alt="k"
+        className={`${style.posLeft} ${style.icon}`}
+      ></img>
       <div className={style.phone}>
-        <div className={style.phone_profile}>
-          {/*   <img
-            src="https://cdn-images-1.medium.com/max/1200/1*NpUUls7kjn9JhO4ChjGV7w.png"
-            style={{
-              width: "100%",
-              height: "100%",
-              borderRadius: "50%",
-              objectFit: "cover",
-            }}
-          /> */}
-        </div>
+        <div className={style.phone_profile}></div>
         <div className={style.card} />
         <div className={style.card} />
         <div className={style.card} />
