@@ -10,7 +10,9 @@ const Admin: React.FC = () => {
         <NavBar />
         <button className={styles.btn_main}>Add New Link</button>
         <div className={styles.items_container}>
-          <LinkItem />
+          <LinkItem text="hello1" />
+          <LinkItem text="hello2" />
+          <LinkItem text="hello3" />
         </div>
       </div>
     </div>
