@@ -8,4 +8,94 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: row;
+}
+.handler_container {
+  width: 5%;
+  height: 100%;
+  border-right: 1px solid #dadee0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .handler_icon {
+    height: 20px;
+    height: 20px;
+    fill: rgb(172, 181, 191);
+    color: rgb(172, 181, 191);
+    //color: #dadee0;
+  }
+}
+.content_container {
+  width: 90%;
+  height: 100%;
+  //background-color: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.content_wraper {
+  width: 90%;
+  height: 80%;
+  //background-color: yellow;
+}
+.title_wraper {
+  display: flex;
+  flex-direction: row;
+}
+.title_field {
+  border: none;
+  background: transparent;
+  width: auto;
+  max-width: 90%;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(27, 27, 27);
+  appearance: none;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  background-image: none;
+  border-radius: 0px;
+  box-shadow: none;
+}
+.edit_btn {
+  background-color: transparent;
+  border: none;
+}
+.edit_icon {
+  fill: rgb(172, 181, 191);
+  color: rgb(172, 181, 191);
+  width: 12px;
+  height: 12px;
+}
+.url_wraper {
+  display: flex;
+  flex-direction: row;
+  margin-top: 0.5rem;
+}
+.url_field {
+  border: none;
+  background: transparent;
+  width: auto;
+  max-width: 90%;
+  font-size: 14px;
+  font-weight: 400;
+  color: rgb(27, 27, 27);
+  appearance: none;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  background-image: none;
+  border-radius: 0px;
+  box-shadow: none;
+}
+.icons_wraper {
+  display: flex;
+  flex-direction: row;
+  margin-top: 1rem;
+}
+.icon {
+  width: 16px;
+  height: 16px;
+  fill: rgb(172, 181, 191);
+  color: rgb(172, 181, 191);
+  margin-right: 0.5rem;
 }

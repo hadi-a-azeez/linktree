@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import LinkItem from "../components/LinkItem";
 import NavBar from "../components/NavBar";
 import styles from "./admin.module.scss";
@@ -16,27 +16,36 @@ export interface itemsState {
 type array = {
   id: number;
   text: string;
+  url: string;
 }[];
 
 const Admin: React.FC = () => {
   const [items, setItems] = useState([
     {
       id: 1,
-      text: "1",
+      text: "Google",
+      url: "google.com",
     },
     {
       id: 2,
-      text: "2",
+      text: "Instagram",
+      url: "instagram.com/hello-world",
     },
     {
       id: 3,
-      text: "3",
+      text: "Youtube",
+      url: "youtube.com/hello-world",
     },
     {
       id: 4,
-      text: "4",
+      text: "Linkedin",
+      url: "linkedin.com/hello-world",
     },
   ]);
+
+  // useEffect(() => {
+  //   console.log("rendered");
+  // }, [items]);
 
   const [{ canDrop, isOver }, drop] = useDrop({
     accept: "ITEM",
@@ -54,12 +63,14 @@ const Admin: React.FC = () => {
       setItems((prevState: array) => {
         const coppiedStateArray: array = [...prevState];
 
+        //remove item by "hoverIndex" and put "dragItem" instead
         const prevItem: array = coppiedStateArray.splice(
           hoverIndex,
           1,
           dragItem
         );
 
+        //remove item by "dragIndex" and put "prevItem" instead
         coppiedStateArray.splice(dragIndex, 1, prevItem[0]);
 
         return coppiedStateArray;
@@ -67,19 +78,59 @@ const Admin: React.FC = () => {
     }
   };
 
+  const handleTitleChange = (value: string, id: number) => {
+    setItems((prevState: array) => {
+      const prevStateCopy = [...prevState];
+      prevStateCopy.map((i) => {
+        if (i.id === id) {
+          i.text = value;
+        }
+      });
+      return prevStateCopy;
+    });
+  };
+  const handleUrlChange = (value: string, id: number) => {
+    setItems((prevState: array) => {
+      const prevStateCopy = [...prevState];
+      prevStateCopy.map((i) => {
+        if (i.id === id) {
+          i.url = value;
+        }
+      });
+      return prevStateCopy;
+    });
+  };
+
+  const handleAddLink = () => {
+    setItems((prevState) => {
+      const prevStateCopy = [...prevState];
+      prevStateCopy.unshift({
+        id: prevState[prevState.length - 1].id + 1,
+        text: "",
+        url: "",
+      });
+      return prevStateCopy;
+    });
+    console.log(items);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.grid_left}>
         <NavBar />
-        <button className={styles.btn_main}>Add New Link</button>
+        <button className={styles.btn_main} onClick={() => handleAddLink()}>
+          Add New Link
+        </button>
         <div className={styles.items_container} ref={drop}>
           {items.map((card, i) => (
             <LinkItem
-              key={card.id}
+              key={i}
               index={i}
-              text={card.text}
+              id={card.id}
+              data={card}
               moveCardHandler={moveCardHandler}
-              setItems={setItems}
+              handleTitleChange={handleTitleChange}
+              handleUrlChange={handleUrlChange}
             />
           ))}
         </div>

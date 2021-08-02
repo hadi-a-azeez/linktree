@@ -22,6 +22,9 @@
   margin-top: 3rem;
   border-radius: 0.8rem;
   border: none;
+  &:hover {
+    background-color: #a076fc;
+  }
 }
 .items_container {
   width: 80%;
