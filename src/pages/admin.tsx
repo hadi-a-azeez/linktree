@@ -3,6 +3,7 @@ import LinkItem from "../components/LinkItem";
 import NavBar from "../components/NavBar";
 import styles from "./admin.module.scss";
 import { useDrop } from "react-dnd";
+import MockUp from "../components/MockUp";
 
 export interface Item {
   id: number;
@@ -134,6 +135,9 @@ const Admin: React.FC = () => {
             />
           ))}
         </div>
+      </div>
+      <div className={styles.grid_right}>
+        <MockUp data={items} />
       </div>
     </div>
   );
