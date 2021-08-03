@@ -4,6 +4,7 @@ import NavBar from "../components/NavBar";
 import styles from "./admin.module.scss";
 import { useDrop } from "react-dnd";
 import MockUp from "../components/MockUp";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 export interface Item {
   id: number;
@@ -47,15 +48,6 @@ const Admin: React.FC = () => {
   // useEffect(() => {
   //   console.log("rendered");
   // }, [items]);
-
-  const [{ canDrop, isOver }, drop] = useDrop({
-    accept: "ITEM",
-    drop: () => ({ name: "anything" }),
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
-    }),
-  });
 
   const moveCardHandler = (dragIndex: number, hoverIndex: number) => {
     const dragItem = items[dragIndex];
@@ -115,6 +107,29 @@ const Admin: React.FC = () => {
     console.log(items);
   };
 
+  //beatiful dnd
+  const reorder = (list: array, startIndex: number, endIndex: number) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+  };
+
+  const onDragEnd = (result: any) => {
+    //dropped outside the list
+    if (!result.destination) {
+      return;
+    }
+
+    const newList = reorder(
+      items,
+      result.source.index,
+      result.destination.index
+    );
+    setItems(newList);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.grid_left}>
@@ -122,19 +137,28 @@ const Admin: React.FC = () => {
         <button className={styles.btn_main} onClick={() => handleAddLink()}>
           Add New Link
         </button>
-        <div className={styles.items_container} ref={drop}>
-          {items.map((card, i) => (
-            <LinkItem
-              key={i}
-              index={i}
-              id={card.id}
-              data={card}
-              moveCardHandler={moveCardHandler}
-              handleTitleChange={handleTitleChange}
-              handleUrlChange={handleUrlChange}
-            />
-          ))}
-        </div>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="droppable">
+            {(provided) => (
+              <div
+                className={styles.items_container}
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
+                {items.map((card, i) => (
+                  <LinkItem
+                    key={i}
+                    index={i}
+                    id={card.id}
+                    data={card}
+                    handleTitleChange={handleTitleChange}
+                    handleUrlChange={handleUrlChange}
+                  />
+                ))}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
       </div>
       <div className={styles.grid_right}>
         <MockUp data={items} />
