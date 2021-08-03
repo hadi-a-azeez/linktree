@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import LinkItem from "../components/LinkItem";
 import NavBar from "../components/NavBar";
 import styles from "./admin.module.scss";
-import { useDrop } from "react-dnd";
 import MockUp from "../components/MockUp";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 export interface Item {
   id: number;
@@ -44,32 +43,6 @@ const Admin: React.FC = () => {
       url: "linkedin.com/hello-world",
     },
   ]);
-
-  // useEffect(() => {
-  //   console.log("rendered");
-  // }, [items]);
-
-  const moveCardHandler = (dragIndex: number, hoverIndex: number) => {
-    const dragItem = items[dragIndex];
-
-    if (dragItem) {
-      setItems((prevState: array) => {
-        const coppiedStateArray: array = [...prevState];
-
-        //remove item by "hoverIndex" and put "dragItem" instead
-        const prevItem: array = coppiedStateArray.splice(
-          hoverIndex,
-          1,
-          dragItem
-        );
-
-        //remove item by "dragIndex" and put "prevItem" instead
-        coppiedStateArray.splice(dragIndex, 1, prevItem[0]);
-
-        return coppiedStateArray;
-      });
-    }
-  };
 
   const handleTitleChange = (value: string, id: number) => {
     setItems((prevState: array) => {

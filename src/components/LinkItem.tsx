@@ -1,8 +1,5 @@
 //import React from "react";
 import styles from "./linkItem.module.scss";
-// import { useDrag, useDrop, DropTargetMonitor } from "react-dnd";
-// import { useRef } from "react";
-// import { XYCoord } from "dnd-core";
 import { Draggable } from "react-beautiful-dnd";
 
 interface data {
@@ -14,15 +11,9 @@ type AppProps = {
   data: data;
   index: number;
   id: number;
-  handleTitleChange: any;
-  handleUrlChange: any;
+  handleTitleChange: (value: string, id: number) => void;
+  handleUrlChange: (value: string, id: number) => void;
 };
-
-// interface DragItem {
-//   index: number;
-//   id: string;
-//   type: string;
-// }
 
 const LinkItem = ({
   data,
