@@ -29,10 +29,12 @@ const LinkItem = ({
           className={styles.card}
           ref={provided.innerRef}
           {...provided.draggableProps}
-          {...provided.dragHandleProps}
           style={provided.draggableProps.style}
         >
-          <div className={styles.handler_container}>
+          <div
+            className={styles.handler_container}
+            {...provided.dragHandleProps}
+          >
             <svg
               viewBox="0 0 16 16"
               color="gray"

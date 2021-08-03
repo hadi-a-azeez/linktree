@@ -15,9 +15,15 @@ const MockUp = ({ data }: appProps) => {
   return (
     <div className={styles.phone}>
       <div className={styles.phone_profile}></div>
-      {data.map((i) => (
-        <div className={styles.card}>{i.text}</div>
-      ))}
+      {data.map(
+        (i, index) =>
+          i.text.length > 0 &&
+          i.url.length > 0 && (
+            <div key={index} className={styles.card}>
+              {i.text}
+            </div>
+          )
+      )}
     </div>
   );
 };

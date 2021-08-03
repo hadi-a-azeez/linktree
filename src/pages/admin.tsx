@@ -43,6 +43,7 @@ const Admin: React.FC = () => {
       url: "linkedin.com/hello-world",
     },
   ]);
+  const [newId, setNewId] = useState(4);
 
   const handleTitleChange = (value: string, id: number) => {
     setItems((prevState: array) => {
@@ -71,16 +72,15 @@ const Admin: React.FC = () => {
     setItems((prevState) => {
       const prevStateCopy = [...prevState];
       prevStateCopy.unshift({
-        id: prevState[prevState.length - 1].id + 1,
+        id: newId + 1,
         text: "",
         url: "",
       });
       return prevStateCopy;
     });
-    console.log(items);
+    setNewId(newId + 1);
   };
 
-  //beatiful dnd
   const reorder = (list: array, startIndex: number, endIndex: number) => {
     const result = Array.from(list);
     const [removed] = result.splice(startIndex, 1);
@@ -94,8 +94,9 @@ const Admin: React.FC = () => {
     if (!result.destination) {
       return;
     }
+    console.log(result);
 
-    const newList = reorder(
+    const newList: array = reorder(
       items,
       result.source.index,
       result.destination.index
@@ -105,7 +106,7 @@ const Admin: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.grid_left}>
+      <section className={styles.grid_left}>
         <NavBar />
         <button className={styles.btn_main} onClick={() => handleAddLink()}>
           Add New Link
@@ -132,10 +133,11 @@ const Admin: React.FC = () => {
             )}
           </Droppable>
         </DragDropContext>
-      </div>
-      <div className={styles.grid_right}>
+        <div style={{ marginTop: "6rem" }} />
+      </section>
+      <section className={styles.grid_right}>
         <MockUp data={items} />
-      </div>
+      </section>
     </div>
   );
 };
