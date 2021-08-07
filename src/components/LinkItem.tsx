@@ -85,8 +85,8 @@ const LinkItem = ({
                   <path
                     fill="none"
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="M8.613 1.434l1.33 4.007a.625.625 0 00.6.422h4.318a.623.623 0 01.378 1.13l-3.5 2.487a.6.6 0 00-.227.68l1.334 4.017a.639.639 0 01-.991.7L8.37 12.4a.642.642 0 00-.739 0l-3.485 2.477a.638.638 0 01-.99-.7l1.335-4.02a.6.6 0 00-.227-.68l-3.5-2.485a.622.622 0 01.378-1.129h4.32a.624.624 0 00.6-.422l1.33-4.007a.649.649 0 011.221 0z"
                   ></path>
                 </svg>
@@ -99,8 +99,8 @@ const LinkItem = ({
                   <path
                     fill="none"
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="M6 2.5v-2h4v2M1 2.5h14M9.533 13.5l.25-9M6.217 4.5l.25 9M2.661 4.5l.889 11h8.9l.888-11"
                   ></path>
                 </svg>

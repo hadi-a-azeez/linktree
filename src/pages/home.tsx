@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import style from "./home.module.scss";
 import Header from "../components/header";
 import Twitter from "../assets/twitter.png";
-import Android from "../assets/android.png";
-import Dori from "../assets/dori.png";
-import Event from "../assets/eventbrite.png";
+// import Android from "../assets/android.png";
+// import Dori from "../assets/dori.png";
+// import Event from "../assets/eventbrite.png";
 import Instagram from "../assets/instagram.png";
 
 const Home: React.FC = () => {

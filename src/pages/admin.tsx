@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import LinkItem from "../components/LinkItem";
 import NavBar from "../components/NavBar";
 import styles from "./admin.module.scss";
 import MockUp from "../components/MockUp";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { useQuery, useMutation } from "@apollo/client";
+import { GET_LINKS } from "../GraphQl/Queries";
+import { ADD_LINK } from "../GraphQl/Mutation";
 
 export interface Item {
   id: number;
@@ -44,6 +47,25 @@ const Admin: React.FC = () => {
     },
   ]);
   const [newId, setNewId] = useState(4);
+  const { error, loading, data: linksData } = useQuery(GET_LINKS);
+  const [addLink, {}] = useMutation(ADD_LINK);
+
+  useEffect(() => {
+    console.log(linksData);
+    const result = addLink({
+      variables: {
+        linkObj: {
+          account_id: 2,
+          position: 8,
+          thumbnailUrl: "twitch.com",
+          title: "twitch",
+          type: "CLASSIC",
+          url: "twitch.com",
+        },
+      },
+    });
+    result.then((res) => console.log(res));
+  }, [linksData]);
 
   const handleTitleChange = (value: string, id: number) => {
     setItems((prevState: array) => {
