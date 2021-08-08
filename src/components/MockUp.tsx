@@ -3,8 +3,9 @@ import styles from "./mockup.module.scss";
 
 type data = {
   id: number;
-  text: string;
+  title: string;
   url: string;
+  position: number;
 }[];
 
 interface appProps {
@@ -17,10 +18,10 @@ const MockUp = ({ data }: appProps) => {
       <div className={styles.phone_profile}></div>
       {data.map(
         (i, index) =>
-          i.text.length > 0 &&
+          i.title.length > 0 &&
           i.url.length > 0 && (
             <div key={index} className={styles.card}>
-              {i.text}
+              {i.title}
             </div>
           )
       )}

@@ -4,7 +4,7 @@ import { Draggable } from "react-beautiful-dnd";
 
 interface data {
   id: number;
-  text: string;
+  title: string;
   url: string;
 }
 type AppProps = {
@@ -50,7 +50,7 @@ const LinkItem = ({
                 <input
                   type="text"
                   placeholder="Title"
-                  value={data.text}
+                  value={data.title}
                   onChange={(e) => handleTitleChange(e.target.value, id)}
                   className={styles.title_field}
                 />

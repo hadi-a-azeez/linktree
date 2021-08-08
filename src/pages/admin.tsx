@@ -19,64 +19,56 @@ export interface itemsState {
 
 type array = {
   id: number;
-  text: string;
+  title: string;
   url: string;
+  position: number;
 }[];
 
 const Admin: React.FC = () => {
-  const [items, setItems] = useState([
-    {
-      id: 1,
-      text: "Google",
-      url: "google.com",
-    },
-    {
-      id: 2,
-      text: "Instagram",
-      url: "instagram.com/hello-world",
-    },
-    {
-      id: 3,
-      text: "Youtube",
-      url: "youtube.com/hello-world",
-    },
-    {
-      id: 4,
-      text: "Linkedin",
-      url: "linkedin.com/hello-world",
-    },
-  ]);
+  const [items, setItems] = useState<array>([]);
   const [newId, setNewId] = useState(4);
-  const { error, loading, data: linksData } = useQuery(GET_LINKS);
-  const [addLink, {}] = useMutation(ADD_LINK);
+  const { error, loading, data: linksData, client } = useQuery(GET_LINKS);
+  // const [addLink, {}] = useMutation(ADD_LINK);
 
   useEffect(() => {
-    console.log(linksData);
-    const result = addLink({
-      variables: {
-        linkObj: {
-          account_id: 2,
-          position: 8,
-          thumbnailUrl: "twitch.com",
-          title: "twitch",
-          type: "CLASSIC",
-          url: "twitch.com",
-        },
-      },
-    });
-    result.then((res) => console.log(res));
+    if (!loading) {
+      setItems(linksData.getLinks);
+      console.log(linksData.getLinks);
+    }
+    // const result = addLink({
+    //   variables: {
+    //     linkObj: {
+    //       account_id: 2,
+    //       position: 8,
+    //       thumbnailUrl: "twitch.com",
+    //       title: "twitch",
+    //       type: "CLASSIC",
+    //       url: "twitch.com",
+    //     },
+    //   },
+    // });
+    // result.then((res) => console.log(res));
   }, [linksData]);
 
   const handleTitleChange = (value: string, id: number) => {
-    setItems((prevState: array) => {
-      const prevStateCopy = [...prevState];
-      prevStateCopy.map((i) => {
-        if (i.id === id) {
-          i.text = value;
-        }
-      });
-      return prevStateCopy;
+    // setItems((prevState: array) => {
+    //   const prevStateCopy = [...prevState];
+    //   prevStateCopy.map((i) => {
+    //     if (i.id === id) {
+    //       i.title = value;
+    //     }
+    //   });
+    //   return prevStateCopy
+    // });
+    const changes = items.filter((i) => i.id === id);
+    changes[0].title = value;
+    client.writeQuery({
+      query: GET_LINKS,
+      data: {
+        ...linksData,
+      },
     });
+    console.log(linksData);
   };
   const handleUrlChange = (value: string, id: number) => {
     setItems((prevState: array) => {
@@ -95,8 +87,9 @@ const Admin: React.FC = () => {
       const prevStateCopy = [...prevState];
       prevStateCopy.unshift({
         id: newId + 1,
-        text: "",
+        title: "",
         url: "",
+        position: 3,
       });
       return prevStateCopy;
     });
@@ -134,31 +127,33 @@ const Admin: React.FC = () => {
           Add New Link
         </button>
         <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="droppable">
-            {(provided) => (
-              <div
-                className={styles.items_container}
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-              >
-                {items.map((card, i) => (
-                  <LinkItem
-                    key={i}
-                    index={i}
-                    id={card.id}
-                    data={card}
-                    handleTitleChange={handleTitleChange}
-                    handleUrlChange={handleUrlChange}
-                  />
-                ))}
-              </div>
-            )}
-          </Droppable>
+          {!loading && (
+            <Droppable droppableId="droppable">
+              {(provided) => (
+                <div
+                  className={styles.items_container}
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                >
+                  {items.map((card: any, i: number) => (
+                    <LinkItem
+                      key={i}
+                      index={i}
+                      id={card.id}
+                      data={card}
+                      handleTitleChange={handleTitleChange}
+                      handleUrlChange={handleUrlChange}
+                    />
+                  ))}
+                </div>
+              )}
+            </Droppable>
+          )}
         </DragDropContext>
         <div style={{ marginTop: "6rem" }} />
       </section>
       <section className={styles.grid_right}>
-        <MockUp data={items} />
+        {!loading && <MockUp data={items} />}
       </section>
     </div>
   );
