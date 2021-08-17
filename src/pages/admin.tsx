@@ -7,7 +7,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useQuery, useMutation } from "@apollo/client";
 import { GET_LINKS } from "../GraphQl/Queries";
 import { ADD_LINK } from "../GraphQl/Mutation";
-import { produce } from "immer";
+import { produce, produceWithPatches } from "immer";
 
 export interface Item {
   id: number;
@@ -72,11 +72,14 @@ const Admin: React.FC = () => {
 
   const handleAddLink = async () => {
     const newData = produce(allData, (draftState: any) => {
+      draftState.getLinks.map((i: any) => {
+        i.position = i.position + 1;
+      });
       draftState.getLinks.unshift({
         id: newId + 1,
         title: "",
         url: "",
-        position: 3,
+        position: 0,
       });
     });
 
@@ -86,6 +89,7 @@ const Admin: React.FC = () => {
         ...newData,
       },
     });
+    console.log(newData);
     // const result = await addLink({
     //   variables: {
     //     linkObj: {
@@ -101,10 +105,32 @@ const Admin: React.FC = () => {
     // console.log(result);
   };
 
-  const reorder = (list: array, startIndex: number, endIndex: number) => {
+  const reorder = (
+    list: array,
+    sourceIndex: number,
+    destinationIndex: number
+  ) => {
     const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
+    const [removed] = result.splice(sourceIndex, 1);
+    result.splice(destinationIndex, 0, removed);
+
+    const newData = produce(allData, (draftState: any) => {
+      draftState.getLinks[sourceIndex].position = destinationIndex;
+      draftState.getLinks.map((data: any, i: number) => {
+        if (i < sourceIndex && i !== sourceIndex) {
+          data.position = data.position + 1;
+        }
+      });
+      const [removed] = draftState.getLinks.splice(sourceIndex, 1);
+      draftState.getLinks.splice(destinationIndex, 0, removed);
+    });
+    client.writeQuery({
+      query: GET_LINKS,
+      data: {
+        ...newData,
+      },
+    });
+    console.log(newData);
 
     return result;
   };
