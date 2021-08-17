@@ -7,6 +7,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useQuery, useMutation } from "@apollo/client";
 import { GET_LINKS } from "../GraphQl/Queries";
 import { ADD_LINK } from "../GraphQl/Mutation";
+import { produce } from "immer";
 
 export interface Item {
   id: number;
@@ -27,73 +28,77 @@ type array = {
 const Admin: React.FC = () => {
   const [items, setItems] = useState<array>([]);
   const [newId, setNewId] = useState(4);
+  const [allData, setAllData] = useState({});
   const { error, loading, data: linksData, client } = useQuery(GET_LINKS);
-  // const [addLink, {}] = useMutation(ADD_LINK);
+  const [addLink, {}] = useMutation(ADD_LINK);
 
   useEffect(() => {
     if (!loading) {
       setItems(linksData.getLinks);
-      console.log(linksData.getLinks);
+      setAllData(linksData);
     }
-    // const result = addLink({
-    //   variables: {
-    //     linkObj: {
-    //       account_id: 2,
-    //       position: 8,
-    //       thumbnailUrl: "twitch.com",
-    //       title: "twitch",
-    //       type: "CLASSIC",
-    //       url: "twitch.com",
-    //     },
-    //   },
-    // });
-    // result.then((res) => console.log(res));
   }, [linksData]);
 
   const handleTitleChange = (value: string, id: number) => {
-    // setItems((prevState: array) => {
-    //   const prevStateCopy = [...prevState];
-    //   prevStateCopy.map((i) => {
-    //     if (i.id === id) {
-    //       i.title = value;
-    //     }
-    //   });
-    //   return prevStateCopy
-    // });
-    const changes = items.filter((i) => i.id === id);
-    changes[0].title = value;
+    const newData = produce(allData, (draftState: any) => {
+      draftState.getLinks.map((i: any) => {
+        if (i.id === id) {
+          i.title = value;
+        }
+      });
+    });
     client.writeQuery({
       query: GET_LINKS,
       data: {
-        ...linksData,
+        ...newData,
       },
     });
-    console.log(linksData);
   };
   const handleUrlChange = (value: string, id: number) => {
-    setItems((prevState: array) => {
-      const prevStateCopy = [...prevState];
-      prevStateCopy.map((i) => {
+    const newData = produce(allData, (draftState: any) => {
+      draftState.getLinks.map((i: any) => {
         if (i.id === id) {
           i.url = value;
         }
       });
-      return prevStateCopy;
+    });
+    client.writeQuery({
+      query: GET_LINKS,
+      data: {
+        ...newData,
+      },
     });
   };
 
-  const handleAddLink = () => {
-    setItems((prevState) => {
-      const prevStateCopy = [...prevState];
-      prevStateCopy.unshift({
+  const handleAddLink = async () => {
+    const newData = produce(allData, (draftState: any) => {
+      draftState.getLinks.unshift({
         id: newId + 1,
         title: "",
         url: "",
         position: 3,
       });
-      return prevStateCopy;
     });
-    setNewId(newId + 1);
+
+    client.writeQuery({
+      query: GET_LINKS,
+      data: {
+        ...newData,
+      },
+    });
+    // const result = await addLink({
+    //   variables: {
+    //     linkObj: {
+    //       account_id: 2,
+    //       position: 8,
+    //       thumbnailUrl: "",
+    //       title: "",
+    //       type: "",
+    //       url: "",
+    //     },
+    //   },
+    // });
+    // console.log(result);
   };
 
   const reorder = (list: array, startIndex: number, endIndex: number) => {

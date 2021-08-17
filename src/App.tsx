@@ -27,6 +27,11 @@ const App: React.FC = () => {
     cache: new InMemoryCache({
       addTypename: false,
       resultCaching: false,
+      typePolicies: {
+        getLinks: {
+          merge: false,
+        },
+      },
     }),
     assumeImmutableResults: false,
   });
