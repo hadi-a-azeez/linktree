@@ -9,26 +9,23 @@ import { GET_LINKS } from "../GraphQl/Queries";
 import { ADD_LINK } from "../GraphQl/Mutation";
 import { produce, produceWithPatches } from "immer";
 
-export interface Item {
-  id: number;
-  text: string;
-}
-
-export interface itemsState {
-  items: Item[];
-}
-
-type array = {
+type link = {
   id: number;
   title: string;
   url: string;
   position: number;
-}[];
+};
+
+type data = {
+  getLinks: link[];
+};
 
 const Admin: React.FC = () => {
-  const [items, setItems] = useState<array>([]);
+  const [items, setItems] = useState<link[]>([]);
   const [newId, setNewId] = useState(4);
-  const [allData, setAllData] = useState({});
+  const [allData, setAllData] = useState<data>({
+    getLinks: [{ id: 0, title: "", url: "", position: 0 }],
+  });
   const { error, loading, data: linksData, client } = useQuery(GET_LINKS);
   const [addLink, {}] = useMutation(ADD_LINK);
 
@@ -55,8 +52,8 @@ const Admin: React.FC = () => {
     });
   };
   const handleUrlChange = (value: string, id: number) => {
-    const newData = produce(allData, (draftState: any) => {
-      draftState.getLinks.map((i: any) => {
+    const newData = produce(allData, (draftState: data) => {
+      draftState.getLinks.map((i: link) => {
         if (i.id === id) {
           i.url = value;
         }
@@ -71,8 +68,8 @@ const Admin: React.FC = () => {
   };
 
   const handleAddLink = async () => {
-    const newData = produce(allData, (draftState: any) => {
-      draftState.getLinks.map((i: any) => {
+    const newData = produce(allData, (draftState: data) => {
+      draftState.getLinks.map((i: link) => {
         i.position = i.position + 1;
       });
       draftState.getLinks.unshift({
@@ -105,25 +102,30 @@ const Admin: React.FC = () => {
     // console.log(result);
   };
 
-  const reorder = (
-    list: array,
-    sourceIndex: number,
-    destinationIndex: number
-  ) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(sourceIndex, 1);
-    result.splice(destinationIndex, 0, removed);
-
-    const newData = produce(allData, (draftState: any) => {
+  const reorder = (sourceIndex: number, destinationIndex: number) => {
+    const newData = produce(allData, (draftState: data) => {
+      //assigning new position to the dragging link
       draftState.getLinks[sourceIndex].position = destinationIndex;
-      draftState.getLinks.map((data: any, i: number) => {
-        if (i < sourceIndex && i !== sourceIndex) {
-          data.position = data.position + 1;
+      //changing the positions of other links
+      draftState.getLinks.map((data: link, i: number) => {
+        //dragging to upwards the list, changing position to top of the list
+        if (sourceIndex > destinationIndex) {
+          if (i < sourceIndex && i >= destinationIndex) {
+            data.position = data.position + 1;
+          }
+        }
+        //dragging to downwards the list, changing position to bottom of the list
+        else {
+          if (i <= destinationIndex && i > sourceIndex) {
+            data.position = data.position - 1;
+          }
         }
       });
+      //rearranging the array
       const [removed] = draftState.getLinks.splice(sourceIndex, 1);
       draftState.getLinks.splice(destinationIndex, 0, removed);
     });
+    setItems(newData.getLinks);
     client.writeQuery({
       query: GET_LINKS,
       data: {
@@ -131,8 +133,6 @@ const Admin: React.FC = () => {
       },
     });
     console.log(newData);
-
-    return result;
   };
 
   const onDragEnd = (result: any) => {
@@ -142,12 +142,7 @@ const Admin: React.FC = () => {
     }
     console.log(result);
 
-    const newList: array = reorder(
-      items,
-      result.source.index,
-      result.destination.index
-    );
-    setItems(newList);
+    reorder(result.source.index, result.destination.index);
   };
 
   return (
